@@ -26,12 +26,11 @@ public class Cliente {
     @Column(length=200,nullable = false)
     private String clienteNombre;
     private String clienteDirecion;
-    @Pattern(regexp = "^[0-9]{15}$", message = "El numero de telefono debe tener 10 digitos")
     private String clienteAplellido;
+    @Pattern(regexp = "^[0-9]{9}$", message = "El numero de telefono debe tener 10 digitos")
     private String clienteTelefono;
     @Email(message = "El correo no es valido") 
     private String clienteMail;
-
     private Integer clienteEstado;
 
     

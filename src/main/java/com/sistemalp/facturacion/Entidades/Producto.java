@@ -20,4 +20,5 @@ public class Producto {
     private Double productoStock;
     private Double productoTasa;
     private Integer productoEstado;
+    private String productoCategoria;
 }
