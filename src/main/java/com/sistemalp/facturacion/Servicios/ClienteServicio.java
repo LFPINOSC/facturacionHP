@@ -28,6 +28,7 @@ public class ClienteServicio {
 
     public Cliente guardar(ClienteConDocumentoDto clienteDto){
         List<DocumentoListaClienteDto> documentos=clienteDto.getDocumentos();
+        
         if( documentos == null || documentos.isEmpty() ){
             throw new RuntimeException("Error no tiene documentos");
         }
@@ -37,6 +38,7 @@ public class ClienteServicio {
         for (DocumentoListaClienteDto doc : documentos) {
             TipoDocumentoCliente tipoDocumentoCliente=new TipoDocumentoCliente();
             tipoDocumentoCliente.setCliente(cliente);
+            System.err.println(doc.getNumeroDocumentoCliente());
             tipoDocumentoCliente.setNumeroDocumentoCliente(doc.getNumeroDocumentoCliente());
             TipoDocumento tipoDocumento=tipoDocumentoRepositorio.getById(doc.getTipoDocumentoId());
             tipoDocumentoCliente.setTipoDocumento(tipoDocumento);
