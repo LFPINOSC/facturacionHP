@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sistemalp.facturacion.Dto.ClienteConDocumentoDto;
 import com.sistemalp.facturacion.Entidades.Cliente;
 import com.sistemalp.facturacion.Servicios.ClienteServicio;
 
@@ -22,22 +23,8 @@ public class ClienteControlador {
     private ClienteServicio clienteServicio;
 
     @PostMapping
-    public Cliente guardar(@RequestBody Cliente cliente){
+    public Cliente guardar(@RequestBody ClienteConDocumentoDto cliente){
         return clienteServicio.guardar(cliente);
-    }
-    @PutMapping("{id}")
-    public Cliente actualizar(@RequestBody Cliente cliente, @PathVariable Long id){
-        Cliente clienteActual=clienteServicio.buscarId(id);
-        if(clienteActual!=null){
-            clienteActual.setClienteNombre(cliente.getClienteNombre());
-            clienteActual.setClienteDirecion(cliente.getClienteDirecion());
-            clienteActual.setClienteTelefono(cliente.getClienteTelefono());
-            clienteActual.setClienteMail(cliente.getClienteMail());
-            clienteActual.setClienteAplellido(cliente.getClienteAplellido());
-            clienteActual.setClienteEstado(cliente.getClienteEstado());
-            return clienteServicio.guardar(clienteActual);
-        }
-        return null;
     }
     @GetMapping
     public List<Cliente> listasAll(){
