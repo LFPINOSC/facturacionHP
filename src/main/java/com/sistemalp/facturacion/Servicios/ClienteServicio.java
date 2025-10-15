@@ -39,6 +39,7 @@ public class ClienteServicio {
             TipoDocumentoCliente tipoDocumentoCliente=new TipoDocumentoCliente();
             tipoDocumentoCliente.setCliente(cliente);
             System.err.println(doc.getNumeroDocumentoCliente());
+            System.err.println(doc.getTipoDocumentoId());
             tipoDocumentoCliente.setNumeroDocumentoCliente(doc.getNumeroDocumentoCliente());
             TipoDocumento tipoDocumento=tipoDocumentoRepositorio.getById(doc.getTipoDocumentoId());
             tipoDocumentoCliente.setTipoDocumento(tipoDocumento);
