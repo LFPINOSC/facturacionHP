@@ -20,7 +20,6 @@ public class TipoDocumentoCliente {
     @JoinColumn(name = "tipoDucumentoId", nullable = false)
     private TipoDocumento tipoDocumento;
     @Id
-    private String tipoDocumentoCliente;
+    private String numeroDocumentoCliente;
     private LocalDateTime tipoDocumentoFecha;
-
 }

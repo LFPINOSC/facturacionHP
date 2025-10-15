@@ -32,6 +32,4 @@ public class Cliente {
     @Email(message = "El correo no es valido") 
     private String clienteMail;
     private Integer clienteEstado;
-
-    
 }
