@@ -33,19 +33,26 @@ public class ClienteServicio {
             throw new RuntimeException("Error no tiene documentos");
         }
 
-        Cliente cliente=clienteDto.getCliente();
-        clienteRepositorio.save(cliente);
-        for (DocumentoListaClienteDto doc : documentos) {
-            TipoDocumentoCliente tipoDocumentoCliente=new TipoDocumentoCliente();
-            tipoDocumentoCliente.setCliente(cliente);
-            System.err.println(doc.getNumeroDocumentoCliente());
-            System.err.println(doc.getTipoDocumentoId());
-            tipoDocumentoCliente.setNumeroDocumentoCliente(doc.getNumeroDocumentoCliente());
-            TipoDocumento tipoDocumento=tipoDocumentoRepositorio.getById(doc.getTipoDocumentoId());
-            tipoDocumentoCliente.setTipoDocumento(tipoDocumento);
-            tipoDocumentoCliente.setTipoDocumentoFecha(LocalDateTime.now());
-            tipoDocumentoClienteRepositorio.save(tipoDocumentoCliente);
+       Cliente cliente=clienteDto.getCliente();
+            clienteRepositorio.save(cliente);
+        try {
+            
+            for (DocumentoListaClienteDto doc : documentos) {
+                    TipoDocumentoCliente tipoDocumentoCliente=new TipoDocumentoCliente();
+                    tipoDocumentoCliente.setCliente(cliente);
+                    System.err.println(doc.getNumeroDocumentoCliente());
+                    System.err.println(doc.getTipoDocumentoId());
+                    tipoDocumentoCliente.setNumeroDocumentoCliente(doc.getNumeroDocumentoCliente());
+                    TipoDocumento tipoDocumento=tipoDocumentoRepositorio.getById(doc.getTipoDocumentoId());
+                    tipoDocumentoCliente.setTipoDocumento(tipoDocumento);
+                    tipoDocumentoCliente.setTipoDocumentoFecha(LocalDateTime.now());
+                    tipoDocumentoClienteRepositorio.save(tipoDocumentoCliente);
+            }
+        } catch (Exception e) {
+            clienteRepositorio.delete(cliente);
+            throw new RuntimeException("Error no pudo crear los documentos del cliente");
         }
+        
         return cliente;
     }
     public List<Cliente> listarAll(){
