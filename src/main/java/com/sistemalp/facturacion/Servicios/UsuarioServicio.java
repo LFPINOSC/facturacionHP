@@ -18,6 +18,7 @@ public class UsuarioServicio {
     @Autowired
     @Lazy
     private PasswordEncoder passwordEncoder;
+
     private Usuario guardar(Usuario usuario){
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         return usuarioRespositorio.save(usuario);
