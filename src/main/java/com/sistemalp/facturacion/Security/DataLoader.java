@@ -9,28 +9,34 @@ import com.sistemalp.facturacion.Entidades.Usuario;
 import com.sistemalp.facturacion.Repositorios.TipoUsuarioRepositorio;
 import com.sistemalp.facturacion.Servicios.UsuarioServicio;
 
-
 @Configuration
 public class DataLoader {
+
     @Bean
-    CommandLineRunner initData(TipoUsuarioRepositorio tipoUsuarioRepositorio, UsuarioServicio usuarioServicio){
-        return args ->{
-            if(!tipoUsuarioRepositorio.findAll().iterator().hasNext()){
-                TipoUsuario tipoUsuario=new TipoUsuario();
-                tipoUsuario.setDescripcion("administrador");
-                tipoUsuario.setRol("administrador");
-                tipoUsuarioRepositorio.save(tipoUsuario);
-                TipoUsuario tipoUsuario1=new TipoUsuario();
-                tipoUsuario1.setDescripcion("gerente");
-                tipoUsuario1.setRol("gerente");
-                tipoUsuarioRepositorio.save(tipoUsuario1);
-                Usuario usuario =new Usuario();
-                usuario.setNombre("admin");
-                usuario.setCorreo("admin@ucacue.edu.ec");
-                usuario.setUsername("admin");
-                usuario.setPassword("admin");
-                usuario.setTipoUsuario(tipoUsuario);
-                usuarioServicio.guardar(usuario);
+    CommandLineRunner initData(
+            TipoUsuarioRepositorio tipoRepo,
+            UsuarioServicio usuarioService) {
+        return args -> {
+            TipoUsuario adminTipo = tipoRepo.findByRol("Admin")
+                    .orElseGet(() -> {
+                        TipoUsuario nuevo = new TipoUsuario();
+                        nuevo.setRol("Admin");
+                        nuevo.setDescripcion("Administrador del sistema");
+                        return tipoRepo.save(nuevo);
+                    });
+
+           if (usuarioService.findByUsername("admin") == null) {
+                Usuario admin = new Usuario();
+                admin.setNombre("Administrador");
+                admin.setUsername("admin");
+                admin.setPassword("admin"); 
+                admin.setTipoUsuario(adminTipo);
+
+                usuarioService.guardar(admin);
+
+                System.out.println("Usuario 'admin' creado con éxito");
+            } else {
+                System.out.println("Usuario 'admin' ya existe, no se crea nuevamente");
             }
         };
     }

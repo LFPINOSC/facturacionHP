@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,9 +18,6 @@ import org.springframework.stereotype.Service;
 import com.sistemalp.facturacion.Entidades.Usuario;
 import com.sistemalp.facturacion.Repositorios.UsuarioRespositorio;
 
-
-
-;
 
 
 @Service
@@ -40,7 +38,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
             usuario.getUsername(), 
             usuario.getPassword(), 
-            mapearRoles(usuario.getTipoUsuario().getRol()) 
+            mapearRoles(usuario.getTipoUsuario().getRol()) // Método para convertir roles a GrantedAuthority
         );
     }
 

@@ -1,5 +1,6 @@
 package com.sistemalp.facturacion.Servicios;
 
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -58,10 +59,9 @@ public class JwtService {
         byte[] keyBytes = SECRET_KEY.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-    public String generateToken(String username, String tipoUsuario) {
+    public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
-                .claim("tipoUsuario", tipoUsuario) 
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hora
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)  // Aquí
