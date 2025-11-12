@@ -19,21 +19,21 @@ public class UsuarioServicio {
     @Lazy
     private PasswordEncoder passwordEncoder;
 
-    private Usuario guardar(Usuario usuario){
+    public Usuario guardar(Usuario usuario){
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         return usuarioRespositorio.save(usuario);
     }
 
-    private List<Usuario> listar(){
+    public List<Usuario> listar(){
         return usuarioRespositorio.findAll();
     }
-    private Usuario listaUsuario(Long id){
+    public Usuario listaUsuario(Long id){
         return usuarioRespositorio.findById(id).orElse(null);
     }
-    private Usuario findByUsername(String username){
+    public Usuario findByUsername(String username){
         return usuarioRespositorio.findByUsername(username).orElse(null);
     }
-    private void eliminar(Long id){
+    public void eliminar(Long id){
         usuarioRespositorio.deleteById(id);
     }
 }

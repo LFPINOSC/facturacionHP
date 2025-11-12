@@ -24,12 +24,13 @@ public class DataLoader {
                 tipoUsuario1.setDescripcion("gerente");
                 tipoUsuario1.setRol("gerente");
                 tipoUsuarioRepositorio.save(tipoUsuario1);
-
                 Usuario usuario =new Usuario();
                 usuario.setNombre("admin");
+                usuario.setCorreo("admin@ucacue.edu.ec");
                 usuario.setUsername("admin");
                 usuario.setPassword("admin");
                 usuario.setTipoUsuario(tipoUsuario);
+                usuarioServicio.guardar(usuario);
             }
         };
     }
