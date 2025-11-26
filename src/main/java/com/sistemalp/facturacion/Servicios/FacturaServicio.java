@@ -150,7 +150,8 @@ public class FacturaServicio {
       
             Element infoTrib = doc.createElement("infoTributaria");
             facturaEl.appendChild(infoTrib);
-
+            infoTrib.appendChild(add(doc, "ambiente", "1"));
+            infoTrib.appendChild(add(doc, "tipoEmision", "1"));
             infoTrib.appendChild(add(doc, "razonSocial", factura.getEmpresa().getRazonSocial()));
             infoTrib.appendChild(add(doc, "nombreComercial", factura.getEmpresa().getNombreComercial()));
             infoTrib.appendChild(add(doc, "ruc", factura.getEmpresa().getRuc()));
