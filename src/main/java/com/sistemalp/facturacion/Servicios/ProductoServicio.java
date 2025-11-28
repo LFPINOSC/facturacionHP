@@ -1,8 +1,5 @@
 package com.sistemalp.facturacion.Servicios;
-
 import java.util.List;
-
-
 import org.springframework.stereotype.Service;
 
 import com.sistemalp.facturacion.Entidades.Producto;
@@ -24,7 +21,6 @@ public class ProductoServicio {
         return productoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));
     }
-
     public Producto crearProducto(Producto producto) {
         if (productoRepository.existsByProductoSerial(producto.getProductoSerial())) {
             throw new RuntimeException("El serial del producto ya existe");
