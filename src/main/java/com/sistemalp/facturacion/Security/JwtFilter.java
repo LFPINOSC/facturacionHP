@@ -21,47 +21,71 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JwtService jwtService;  // Servicio para validar y extraer info del JWT (debes implementarlo)
+    private JwtService jwtService;
 
     @Autowired
-    private UserDetailsService userDetailsService;  // Servicio para cargar usuario por username
+    private UserDetailsService userDetailsService;
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain)
             throws ServletException, IOException {
-        System.out.println("hola1: "+ request.getServletPath());
+
         String path = request.getServletPath();
-        if (path.startsWith("/auth/") || path.startsWith("/v3/") || path.startsWith("/swagger")) {
-            System.out.println("hola3");
+
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             filterChain.doFilter(request, response);
             return;
         }
-        System.out.println("hola2");
-       final String authHeader = request.getHeader("Authorization");
-        String username = null;
+
+        if ("GET".equalsIgnoreCase(request.getMethod())
+                || path.startsWith("/auth")
+                || path.startsWith("/v3")
+                || path.startsWith("/swagger")) {
+
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        final String authHeader = request.getHeader("Authorization");
         String jwtToken = null;
+        String username = null;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            jwtToken = authHeader.substring(7); // Extrae token (sin "Bearer ")
+            jwtToken = authHeader.substring(7);
             try {
                 username = jwtService.extractUsername(jwtToken);
             } catch (Exception e) {
-                logger.error("Error al extraer username del JWT: " + e.getMessage());
+                logger.error("JWT inválido", e);
             }
         }
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+        if (username != null &&
+                SecurityContextHolder.getContext().getAuthentication() == null) {
+
+            UserDetails userDetails =
+                    userDetailsService.loadUserByUsername(username);
 
             if (jwtService.validarToken(jwtToken)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
 
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                UsernamePasswordAuthenticationToken authToken =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities()
+                        );
 
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                authToken.setDetails(
+                        new WebAuthenticationDetailsSource()
+                                .buildDetails(request)
+                );
+
+                SecurityContextHolder.getContext()
+                        .setAuthentication(authToken);
             }
         }
+
         filterChain.doFilter(request, response);
     }
-
 }
